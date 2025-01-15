@@ -1,7 +1,15 @@
 #include <iostream>
-#include <SDL3/SDL.h>
 
-int main()
+/*
+Note that this is SDL3, not SDL2. SDL3 is the lastest official
+version of SDL, and apparently it is "extremely well documented" and easier to use.
+Here is a link to see new features in SDL3 as well as the documentation:
+https://wiki.libsdl.org/SDL3/NewFeatures
+*/
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
+
+int main(int argc, char *argv[])
 {
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
@@ -9,7 +17,7 @@ int main()
         return 1;
     }
 
-    SDL_Window *win = SDL_CreateWindow("Hello World!",  640, 480, SDL_WINDOW_MOUSE_FOCUS);
+    SDL_Window *win = SDL_CreateWindow("Hello World!", 640, 480, SDL_WINDOW_MOUSE_FOCUS);
 
     if (win == nullptr)
     {
