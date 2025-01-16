@@ -34,3 +34,6 @@ add_executable(TestProject ${src})
 
 # Link SDL3
 target_link_libraries(TestProject PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)
+
+# Copy assets folder to output directory
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
