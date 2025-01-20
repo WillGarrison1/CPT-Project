@@ -8,8 +8,14 @@ https://wiki.libsdl.org/SDL3/NewFeatures
 */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-
 #include <SDL3_image/SDL_image.h>
+
+#include <chrono>
+
+unsigned long long get_time()
+{
+    return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+}
 
 int main(int argc, char *argv[])
 {
@@ -45,7 +51,10 @@ int main(int argc, char *argv[])
     SDL_FRect r = {0, 0, 80, 80};
     bool running = true;
 
-    
+    unsigned long long prev_time = get_time();
+
+    float fpsAvg = 0;
+    unsigned long long fpsCount = 0;
 
     while (running)
     {
@@ -75,12 +84,25 @@ int main(int argc, char *argv[])
         SDL_GetMouseState(&x, &y);
         SDL_GetWindowSize(win, &x1, &y1);
 
+        r.x = x - 40; // Set the position of the texture to the mouse position
+        r.y = y - 40;
+
         SDL_RenderDebugText(ren, 20, 20, "Hello World!");
 
         SDL_RenderTexture(ren, t, NULL, &r);
         SDL_RenderLine(ren, x1 / 2, y1 / 2, x, y);
 
         SDL_RenderPresent(ren);
+
+        unsigned long long current_time = get_time();
+        unsigned long long delta_time = current_time - prev_time;
+        prev_time = current_time;
+
+        fpsAvg += 1.0 / (delta_time / 1e9);
+        fpsCount++;
+
+        if (fpsCount % 10000 == 0)
+            std::cout << "FPS: " << fpsAvg / fpsCount << std::endl;
     }
 
     SDL_DestroyRenderer(ren);
