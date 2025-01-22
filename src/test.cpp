@@ -11,6 +11,7 @@ https://wiki.libsdl.org/SDL3/NewFeatures
 #include <SDL3_image/SDL_image.h>
 
 #include <chrono>
+#include <math.h>
 
 unsigned long long get_time()
 {
@@ -91,6 +92,8 @@ int main(int argc, char *argv[])
 
         SDL_RenderTexture(ren, t, NULL, &r);
         SDL_RenderLine(ren, x1 / 2, y1 / 2, x, y);
+        SDL_RenderLine(ren, x1/2, y1/2, x1/2, y);
+        SDL_RenderLine(ren, x1/2, y, x, y);
 
         SDL_RenderPresent(ren);
 
