@@ -27,7 +27,7 @@ add_executable(TestProject ${src})
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        target_compile_options(TestProject PRIVATE -O3 -Wall -Wextra -Wpedantic)
+        target_compile_options(TestProject PRIVATE -O3 -flto -Wall -Wextra -Wpedantic)
     endif()
 elseif (CMAKE_BUILD_TYPE STREQUAL "Debug")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")

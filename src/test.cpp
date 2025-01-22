@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
         SDL_RenderClear(ren);
 
-        SDL_SetRenderDrawColor(ren, 255, 255, 255, 150);
+        SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
 
         float x, y = 0;
         int x1, y1 = 0;
