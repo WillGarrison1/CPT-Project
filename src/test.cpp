@@ -35,10 +35,16 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "direct3d11");
+
     SDL_SetWindowPosition(win, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     SDL_ShowWindow(win);
 
     SDL_Renderer *ren = SDL_CreateRenderer(win, NULL);
+
+   
+    
+    
 
     if (ren == nullptr)
     {
