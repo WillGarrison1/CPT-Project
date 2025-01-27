@@ -26,6 +26,11 @@ struct Vector2
         y = other.y;
     }
 
+    bool operator==(const Vector2& other)
+    {
+        return (x == other.x && y == other.y);
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const Vector2<T>& vector);
 };
 
