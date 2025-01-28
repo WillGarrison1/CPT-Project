@@ -1,13 +1,14 @@
 #include <iostream>
 
+#include "core/Entry.h"
+
 /*
 Note that this is SDL3, not SDL2. SDL3 is the lastest official
 version of SDL, and apparently it is "extremely well documented" and easier to use.
 Here is a link to see new features in SDL3 as well as the documentation:
 https://wiki.libsdl.org/SDL3/NewFeatures
 */
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
+
 #include <SDL3_image/SDL_image.h>
 
 #include <chrono>
@@ -18,13 +19,9 @@ unsigned long long get_time()
     return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-int main(int argc, char *argv[])
+int GameInit(int argc, char **argv)
 {
-    if (!SDL_Init(SDL_INIT_VIDEO))
-    {
-        std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;
-        return 1;
-    }
+    
 
     SDL_Window *win = SDL_CreateWindow("Hello World!", 640, 480, SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_RESIZABLE);
 
@@ -35,16 +32,12 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "direct3d11");
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "vulkan");
 
     SDL_SetWindowPosition(win, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     SDL_ShowWindow(win);
 
     SDL_Renderer *ren = SDL_CreateRenderer(win, NULL);
-
-   
-    
-    
 
     if (ren == nullptr)
     {
@@ -94,12 +87,14 @@ int main(int argc, char *argv[])
         r.x = x - 40; // Set the position of the texture to the mouse position
         r.y = y - 40;
 
-        SDL_RenderDebugText(ren, 20, 20, "Hello World!");
+        char n_char[6 + sizeof(char)];
+        std::sprintf(n_char, "%d", (int)(fpsAvg / fpsCount));
 
+        SDL_RenderDebugText(ren, 20, 20, n_char);
         SDL_RenderTexture(ren, t, NULL, &r);
         SDL_RenderLine(ren, x1 / 2, y1 / 2, x, y);
-        SDL_RenderLine(ren, x1/2, y1/2, x1/2, y);
-        SDL_RenderLine(ren, x1/2, y, x, y);
+        SDL_RenderLine(ren, x1 / 2, y1 / 2, x1 / 2, y);
+        SDL_RenderLine(ren, x1 / 2, y, x, y);
 
         SDL_RenderPresent(ren);
 
@@ -110,13 +105,12 @@ int main(int argc, char *argv[])
         fpsAvg += 1.0 / (delta_time / 1e9);
         fpsCount++;
 
-        if (fpsCount % 10000 == 0)
+        if (fpsCount % 1000 == 0)
             std::cout << "FPS: " << fpsAvg / fpsCount << std::endl;
     }
 
     SDL_DestroyRenderer(ren);
     SDL_DestroyWindow(win);
-    SDL_Quit();
 
     return 0;
 }
