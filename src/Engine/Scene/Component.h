@@ -13,10 +13,12 @@ enum class ComponentID
 
 struct Component
 {
+    const ComponentID ID = ComponentID::Component;
 };
 
 struct Transform : Component
 {
+    const ComponentID ID = ComponentID::Transform;
     Vector2<float> position;
     float rotation;
 };
@@ -26,11 +28,13 @@ struct Transform : Component
  */
 struct Material : Component
 {
-    
+    ComponentID ID = ComponentID::Material;
+    SDL_Texture *texture;
 };
 
 struct RigidBody : Component
 {
+    ComponentID ID = ComponentID::RigidBody;
     Vector2<float> velocity;
     float rotationalVeclocity;
     float mass;
