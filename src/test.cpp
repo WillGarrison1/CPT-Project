@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Engine/Core/Entry.h"
+#include "Engine/Core/Engine.h"
 
 /*
 Note that this is SDL3, not SDL2. SDL3 is the lastest official
