@@ -2,40 +2,42 @@
 
 #include "Engine/Math/Vector2.hpp"
 #include <SDL3/SDL_render.h>
-
-enum class ComponentID
+namespace Engine
 {
-    Component,
-    Transform,
-    Material,
-    RigidBody,
-};
+    enum class ComponentID
+    {
+        Component,
+        Transform,
+        Material,
+        RigidBody,
+    };
 
-struct Component
-{
-    const ComponentID ID = ComponentID::Component;
-};
+    struct Component
+    {
+        const ComponentID ID = ComponentID::Component;
+    };
 
-struct Transform : Component
-{
-    const ComponentID ID = ComponentID::Transform;
-    Vector2<float> position;
-    float rotation;
-};
+    struct Transform : public Component
+    {
+        const ComponentID ID = ComponentID::Transform;
+        Vector2<float> position;
+        float rotation;
+    };
 
-/**
- * @brief Contains the texture to be rendered
- */
-struct Material : Component
-{
-    ComponentID ID = ComponentID::Material;
-    SDL_Texture *texture;
-};
+    /**
+     * @brief Contains the texture to be rendered
+     */
+    struct Material : public Component
+    {
+        ComponentID ID = ComponentID::Material;
+        SDL_Texture *texture;
+    };
 
-struct RigidBody : Component
-{
-    ComponentID ID = ComponentID::RigidBody;
-    Vector2<float> velocity;
-    float rotationalVeclocity;
-    float mass;
-};
+    struct RigidBody : public Component
+    {
+        ComponentID ID = ComponentID::RigidBody;
+        Vector2<float> velocity;
+        float rotationalVeclocity;
+        float mass;
+    };
+}

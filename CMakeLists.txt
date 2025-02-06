@@ -20,6 +20,9 @@ file(GLOB_RECURSE src
     "src/*.cpp"
 )
 
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 # Add the executable
 add_executable(TestProject ${src})
 
