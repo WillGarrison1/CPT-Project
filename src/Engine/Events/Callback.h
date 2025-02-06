@@ -2,12 +2,11 @@
 
 #include <functional>
 
+#include "event.t"
+
 namespace Engine
 {
-    class Event
-    {
-        
-    };
+
 
     using EventCallbackFunc = std::function<void(Event)>;
 
