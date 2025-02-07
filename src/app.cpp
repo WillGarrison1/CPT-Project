@@ -24,8 +24,8 @@ unsigned long long get_time()
 
 int GameInit(int argc, char **argv)
 {
-
-    Engine::WinProps properties = {"Game", nullptr};
+    std::string title = "Game";
+    Engine::WinProps properties(static_cast<std::string>("Game"));
     Engine::Window *gameWindow = new Engine::Window(properties);
 
     Engine::Renderer *renderer = new Engine::Renderer(*gameWindow);
@@ -39,8 +39,6 @@ int GameInit(int argc, char **argv)
 
     while (running)
     {
-        r.x = x - 40; // Set the position of the texture to the mouse position
-        r.y = y - 40;
 
         char n_char[6 + sizeof(char)];
         std::sprintf(n_char, "%d", (int)(fpsAvg / fpsCount));
