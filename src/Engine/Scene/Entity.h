@@ -35,7 +35,7 @@ namespace Engine
 
         void addComponent(Component *component)
         {
-            ASSERT(component.count(component->ID) == 0); // Should probably change to allow multiple components
+            ASSERT(components.count(component->ID) == 0); // Should probably change to allow multiple components
             components.insert({component->ID, component});
         }
 

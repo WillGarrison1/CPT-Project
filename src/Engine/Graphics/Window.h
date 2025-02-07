@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <SDL3/SDL_video.h>
 
 #include "Engine/Events/Event.h"
-#include "Engine/Math/Vector2.hpp"
+#include "Engine/Math/Vector2.h"
 
 #define DEFAULT_WIN_WIDTH 1080
 #define DEFAULT_WIN_HEIGHT 720
