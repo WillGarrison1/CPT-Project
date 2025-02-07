@@ -2,6 +2,8 @@
 
 #include "Engine/Core/Entry.h"
 #include "Engine/Core/Engine.h"
+#include "Engine/Graphics/Window.h"
+#include "Engine/Graphics/Renderer.h"
 
 /*
 Note that this is SDL3, not SDL2. SDL3 is the lastest official
@@ -22,31 +24,11 @@ unsigned long long get_time()
 
 int GameInit(int argc, char **argv)
 {
-    
 
-    SDL_Window *win = SDL_CreateWindow("Hello World!", 640, 480, SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_RESIZABLE);
+    Engine::WinProps properties = {"Game", nullptr};
+    Engine::Window *gameWindow = new Engine::Window(properties);
 
-    if (win == nullptr)
-    {
-        std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "vulkan");
-
-    SDL_SetWindowPosition(win, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-    SDL_ShowWindow(win);
-
-    SDL_Renderer *ren = SDL_CreateRenderer(win, NULL);
-
-    if (ren == nullptr)
-    {
-        SDL_DestroyWindow(win);
-        std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        return 1;
-    }
+    Engine::Renderer *renderer = new Engine::Renderer(*gameWindow);
 
     SDL_Texture *t = IMG_LoadTexture(ren, "assets/test.png");
     SDL_FRect r = {0, 0, 80, 80};

@@ -40,9 +40,15 @@ namespace Engine
         }
 
         template <ComponentID comp>
+        bool hasComponent()
+        {
+            return components.count(comp) != 0;
+        }
+
+        template <ComponentID comp>
         Component *getComponent()
         {
-            ASSERT(components.count(component->ID) != 0);
+            ASSERT(components.count(comp) != 0);
             return components[comp];
         }
 

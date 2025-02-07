@@ -28,18 +28,33 @@ namespace Engine
         SDL_RenderClear(renderer);
     }
 
-    void Renderer::RenderEntity(Entity *entity, bool recursive) const
+    void Renderer::RenderEntity(Entity *entity, bool recursive, Vector2<float> center) const
     {
-        Transform *tranform = static_cast<Transform *>(entity->getComponent<ComponentID::Transform>());
+
+        if (!entity->hasComponent<ComponentID::Transform>() || entity->hasComponent<ComponentID::Material>())
+            return;
+
+        Transform *transform = static_cast<Transform *>(entity->getComponent<ComponentID::Transform>());
         Material *entityMat = static_cast<Material *>(entity->getComponent<ComponentID::Material>());
 
+        ASSERT(transform != nullptr);
+        ASSERT(entityMat != nullptr);
+        ASSERT(entityMat->texture != nullptr);
+
         // Render stuff here
+        center = transform->position + center;
+
+        float width, height; // should probably store the image dimensions in material struct
+        SDL_GetTextureSize(entityMat->texture, &width, &height);
+        SDL_FRect dest = {center.x - width / 2, center.y - height / 2, width, height};
+
+        SDL_RenderTexture(renderer, entityMat->texture, NULL, &dest);
 
         if (recursive)
         {
             for (Entity *child : entity->getChildren())
             {
-                RenderEntity(child, true);
+                RenderEntity(child, true, center);
             }
         }
     }
@@ -48,6 +63,7 @@ namespace Engine
     {
         if (scene->root)
         {
+            RenderEntity(scene->root, true, {0, 0});
         }
     }
 

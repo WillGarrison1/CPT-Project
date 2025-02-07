@@ -14,13 +14,11 @@ namespace Engine
         Quit,
     };
 
-    class Event
+    struct Event
     {
-    public:
-        Event(EventType);
+        Event(EventType e) : eventType(e) {}
         ~Event();
 
-    private:
-        
+        EventType eventType;
     };
 }

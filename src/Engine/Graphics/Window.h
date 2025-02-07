@@ -73,6 +73,9 @@ namespace Engine
 
         SDL_Window *getWindow() const { return m_Window; }
 
+        // Updates the window and calls events
+        void Update();
+
     private:
         WinProps m_Properties;
 
