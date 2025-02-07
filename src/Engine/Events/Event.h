@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL3/SDL_events.h>
+
 namespace Engine
 {
 
@@ -16,7 +18,8 @@ namespace Engine
 
     struct Event
     {
-        Event(EventType e) : eventType(e) {}
+        Event(SDL_Event e);
+        Event(EventType e);
         ~Event();
 
         EventType eventType;

@@ -1,3 +1,5 @@
+#include <vector>
+
 #include <SDL3/SDL_events.h>
 
 #include "Window.h"
@@ -14,11 +16,16 @@ namespace Engine
                                     0);
     }
 
-    void Window::Update()
+    std::vector<Event> Window::getEvents()
     {
+        std::vector<Event> events;
+
         SDL_Event e;
         while (SDL_PollEvent(&e))
         {
+            events.push_back(e);
         }
+
+        return events;
     }
 }

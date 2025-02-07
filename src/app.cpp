@@ -30,7 +30,6 @@ int GameInit(int argc, char **argv)
 
     Engine::Renderer *renderer = new Engine::Renderer(*gameWindow);
 
-    SDL_Texture *t = IMG_LoadTexture(ren, "assets/test.png");
     SDL_FRect r = {0, 0, 80, 80};
     bool running = true;
 

@@ -8,9 +8,9 @@ namespace Engine
 
 #ifdef DEBUG_MODE
 #define ASSERT(x)                                                         \
-    if (x)                                                           \
+    if (x)                                                                \
     {                                                                     \
-        ::std::errc << "Failed assert at line: " __LINE__ << ::std::endl; \
+        ::std::cerr << "Failed assert at line: " __LINE__ << ::std::endl; \
         ::std::raise(SIGTRAP);                                            \
     }
 #else
