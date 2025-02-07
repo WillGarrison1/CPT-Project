@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Engine/Scene/Component.h"
+#include <SDL3_image/SDL_image.h>
 
 namespace Engine
 {
@@ -65,6 +66,13 @@ namespace Engine
         {
             RenderEntity(scene->root, true, {0, 0});
         }
+    }
+
+    Material Renderer::loadMaterial(std::string path)
+    {
+        Material img;
+        img.texture = IMG_LoadTexture(renderer, path.c_str());
+        return img;
     }
 
     void Renderer::Update() const

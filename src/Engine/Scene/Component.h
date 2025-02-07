@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Engine/Math/Vector2.hpp"
+#include "Engine/Math/Vector2.h"
 #include <SDL3/SDL_render.h>
 namespace Engine
 {

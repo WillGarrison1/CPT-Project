@@ -28,6 +28,7 @@ namespace Engine
         void Clear() const;
         void Update() const;
 
+
     private:
         SDL_Renderer *renderer;
 
