@@ -9,6 +9,8 @@ extern int GameInit(int argc, char **argv);
 int main(int argc, char **argv)
 {
 
+    SDL_SetHint(SDL_HINT_RENDER_DRIVER, "vulkan");
+
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
         std::cerr << "SDL_Init Error: " << SDL_GetError() << std::endl;

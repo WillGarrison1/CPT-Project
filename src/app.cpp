@@ -2,21 +2,12 @@
 #include <chrono>
 #include <math.h>
 
-#include <SDL3_image/SDL_image.h>
-
 #include "Engine/Core/Entry.h"
 #include "Engine/Core/Engine.h"
 #include "Engine/Events/Event.h"
 #include "Engine/Scene/Scene.h"
 #include "Engine/Graphics/Window.h"
 #include "Engine/Graphics/Renderer.h"
-
-/*
-Note that this is SDL3, not SDL2. SDL3 is the lastest official
-version of SDL, and apparently it is "extremely well documented" and easier to use.
-Here is a link to see new features in SDL3 as well as the documentation:
-https://wiki.libsdl.org/SDL3/NewFeatures
-*/
 
 unsigned long long get_time()
 {
@@ -25,9 +16,8 @@ unsigned long long get_time()
 
 int GameInit(int argc, char **argv)
 {
-    std::string title = "Game";
-    Engine::WinProps properties(static_cast<std::string>("Game"));
-    Engine::Window *gameWindow = new Engine::Window(properties);
+
+    Engine::Window *gameWindow = new Engine::Window({"Game", 1080, 720, false});
 
     Engine::Renderer *renderer = new Engine::Renderer(gameWindow);
 
@@ -83,6 +73,10 @@ int GameInit(int argc, char **argv)
         if (fpsCount % 1000 == 0)
             std::cout << "FPS: " << fpsAvg / fpsCount << std::endl;
     }
+
+    delete mainScene;
+    delete renderer;
+    delete gameWindow;
 
     return 0;
 }

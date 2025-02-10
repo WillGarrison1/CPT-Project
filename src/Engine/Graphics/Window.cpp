@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-    Window::Window(WinProps &properties)
+    Window::Window(WinProps properties)
     {
         m_Properties = properties;
 

@@ -44,6 +44,10 @@ namespace Engine
         WinProps(const WinProps &props)
             : title(props.title), width(props.width), height(props.height), vsync(props.vsync) {};
 
+        ~WinProps()
+        {
+        }
+
         WinProps &operator=(const WinProps &props)
         {
             title = props.title;
@@ -58,7 +62,7 @@ namespace Engine
     {
     public:
         Window() : m_Properties(), m_Window(nullptr) {}
-        Window(WinProps &prop);
+        Window(WinProps prop);
 
         ~Window()
         {
@@ -69,7 +73,7 @@ namespace Engine
 
         SDL_Window *getWindow() const { return m_Window; }
 
-        bool getEvent(Event& event);
+        bool getEvent(Event &event);
 
         // Updates the window and calls events
         void Update();
