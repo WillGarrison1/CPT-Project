@@ -10,7 +10,7 @@ namespace Engine
         renderer = SDL_CreateRenderer(NULL, NULL);
     }
 
-    Renderer::Renderer(Window* window)
+    Renderer::Renderer(Window *window)
     {
         renderer = SDL_CreateRenderer(window->getWindow(), NULL);
         if (window->getProps().vsync)
@@ -29,11 +29,13 @@ namespace Engine
         SDL_RenderClear(renderer);
     }
 
-    void Renderer::RenderEntity(Entity *entity, bool recursive, Vector2<float> center) const
+    void Renderer::RenderEntity(Entity *entity, bool recursive, Vector2<float> parent, Camera *camera) const
     {
 
         if (entity->hasComponent<ComponentID::Transform>() && entity->hasComponent<ComponentID::Material>())
         {
+
+            Transform *cameraTransform = static_cast<Transform *>(camera->getComponent<ComponentID::Transform>());
 
             Transform *transform = static_cast<Transform *>(entity->getComponent<ComponentID::Transform>());
             Material *entityMat = static_cast<Material *>(entity->getComponent<ComponentID::Material>());
@@ -43,11 +45,13 @@ namespace Engine
             ASSERT(entityMat->texture != nullptr);
 
             // Render stuff here
-            center = transform->position + center;
+            parent = transform->position + parent;
+
+            Vector2<float> screenPos = parent - cameraTransform->position;
 
             float width, height; // should probably store the image dimensions in material struct
             SDL_GetTextureSize(entityMat->texture, &width, &height);
-            SDL_FRect dest = {center.x - width / 2, center.y - height / 2, width, height};
+            SDL_FRect dest = {screenPos.x - width / 2, screenPos.y - height / 2, width, height};
 
             SDL_RenderTexture(renderer, entityMat->texture, NULL, &dest);
         }
@@ -55,17 +59,22 @@ namespace Engine
         {
             for (Entity *child : entity->getChildren())
             {
-                RenderEntity(child, true, center);
+                RenderEntity(child, true, parent, camera);
             }
         }
     }
 
     void Renderer::RenderScene() const
     {
-        if (scene->root)
-        {
-            RenderEntity(scene->root, true, {0, 0});
-        }
+        if (!scene->root)
+            return;
+
+        Camera *sceneCamera = scene->getCamera();
+
+        if (!sceneCamera)
+            return;
+
+        RenderEntity(scene->root, true, {0, 0}, sceneCamera);
     }
 
     Material *Renderer::loadMaterial(std::string path)

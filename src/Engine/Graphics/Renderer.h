@@ -14,13 +14,13 @@ namespace Engine
     public:
         Renderer();
 
-        Renderer(Window* window);
+        Renderer(Window *window);
         ~Renderer();
 
         void SetDrawColor(Color color) const;
         void SetScene(Scene *s) { scene = s; };
 
-        void RenderEntity(Entity *entity, bool recursive, Vector2<float> center) const;
+        void RenderEntity(Entity *entity, bool recursive, Vector2<float> center, Camera *camera) const;
         void RenderScene() const;
 
         Material *loadMaterial(std::string path);

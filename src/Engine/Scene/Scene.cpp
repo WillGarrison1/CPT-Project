@@ -5,6 +5,7 @@ namespace Engine
 
     Scene::Scene()
     {
+        targetCamera = nullptr;
         root = new Entity();
     }
 

@@ -21,10 +21,14 @@ int GameInit(int argc, char **argv)
 
     Engine::Renderer *renderer = new Engine::Renderer(gameWindow);
 
-    Engine::Entity *square = new Engine::Entity();
-
     // Main scene
     Engine::Scene *mainScene = new Engine::Scene();
+
+    Engine::Camera *camera = new Engine::Camera({100, 100}, {1080, 720});
+    mainScene->root->addChild(camera);
+    mainScene->setCamera(camera);
+
+    Engine::Entity *square = new Engine::Entity();
 
     Engine::Transform *squareTransform = new Engine::Transform();
 
