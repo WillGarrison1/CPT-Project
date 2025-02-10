@@ -10,10 +10,10 @@ namespace Engine
         renderer = SDL_CreateRenderer(NULL, NULL);
     }
 
-    Renderer::Renderer(Window window)
+    Renderer::Renderer(Window* window)
     {
-        renderer = SDL_CreateRenderer(window.getWindow(), NULL);
-        if (window.getProps().vsync)
+        renderer = SDL_CreateRenderer(window->getWindow(), NULL);
+        if (window->getProps().vsync)
             SDL_SetRenderVSync(renderer, 1);
     }
 
@@ -32,25 +32,25 @@ namespace Engine
     void Renderer::RenderEntity(Entity *entity, bool recursive, Vector2<float> center) const
     {
 
-        if (!entity->hasComponent<ComponentID::Transform>() || entity->hasComponent<ComponentID::Material>())
-            return;
+        if (entity->hasComponent<ComponentID::Transform>() && entity->hasComponent<ComponentID::Material>())
+        {
 
-        Transform *transform = static_cast<Transform *>(entity->getComponent<ComponentID::Transform>());
-        Material *entityMat = static_cast<Material *>(entity->getComponent<ComponentID::Material>());
+            Transform *transform = static_cast<Transform *>(entity->getComponent<ComponentID::Transform>());
+            Material *entityMat = static_cast<Material *>(entity->getComponent<ComponentID::Material>());
 
-        ASSERT(transform != nullptr);
-        ASSERT(entityMat != nullptr);
-        ASSERT(entityMat->texture != nullptr);
+            ASSERT(transform != nullptr);
+            ASSERT(entityMat != nullptr);
+            ASSERT(entityMat->texture != nullptr);
 
-        // Render stuff here
-        center = transform->position + center;
+            // Render stuff here
+            center = transform->position + center;
 
-        float width, height; // should probably store the image dimensions in material struct
-        SDL_GetTextureSize(entityMat->texture, &width, &height);
-        SDL_FRect dest = {center.x - width / 2, center.y - height / 2, width, height};
+            float width, height; // should probably store the image dimensions in material struct
+            SDL_GetTextureSize(entityMat->texture, &width, &height);
+            SDL_FRect dest = {center.x - width / 2, center.y - height / 2, width, height};
 
-        SDL_RenderTexture(renderer, entityMat->texture, NULL, &dest);
-
+            SDL_RenderTexture(renderer, entityMat->texture, NULL, &dest);
+        }
         if (recursive)
         {
             for (Entity *child : entity->getChildren())
@@ -68,10 +68,10 @@ namespace Engine
         }
     }
 
-    Material Renderer::loadMaterial(std::string path)
+    Material *Renderer::loadMaterial(std::string path)
     {
-        Material img;
-        img.texture = IMG_LoadTexture(renderer, path.c_str());
+        Material *img = new Material();
+        img->texture = IMG_LoadTexture(renderer, path.c_str());
         return img;
     }
 

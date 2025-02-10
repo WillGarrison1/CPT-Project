@@ -14,7 +14,7 @@ namespace Engine
     public:
         Renderer();
 
-        Renderer(Window window);
+        Renderer(Window* window);
         ~Renderer();
 
         void SetDrawColor(Color color) const;
@@ -23,11 +23,10 @@ namespace Engine
         void RenderEntity(Entity *entity, bool recursive, Vector2<float> center) const;
         void RenderScene() const;
 
-        Material loadMaterial(std::string path);
+        Material *loadMaterial(std::string path);
 
         void Clear() const;
         void Update() const;
-
 
     private:
         SDL_Renderer *renderer;

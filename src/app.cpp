@@ -1,7 +1,13 @@
 #include <iostream>
+#include <chrono>
+#include <math.h>
+
+#include <SDL3_image/SDL_image.h>
 
 #include "Engine/Core/Entry.h"
 #include "Engine/Core/Engine.h"
+#include "Engine/Events/Event.h"
+#include "Engine/Scene/Scene.h"
 #include "Engine/Graphics/Window.h"
 #include "Engine/Graphics/Renderer.h"
 
@@ -11,11 +17,6 @@ version of SDL, and apparently it is "extremely well documented" and easier to u
 Here is a link to see new features in SDL3 as well as the documentation:
 https://wiki.libsdl.org/SDL3/NewFeatures
 */
-
-#include <SDL3_image/SDL_image.h>
-
-#include <chrono>
-#include <math.h>
 
 unsigned long long get_time()
 {
@@ -28,7 +29,25 @@ int GameInit(int argc, char **argv)
     Engine::WinProps properties(static_cast<std::string>("Game"));
     Engine::Window *gameWindow = new Engine::Window(properties);
 
-    Engine::Renderer *renderer = new Engine::Renderer(*gameWindow);
+    Engine::Renderer *renderer = new Engine::Renderer(gameWindow);
+
+    Engine::Entity *square = new Engine::Entity();
+
+    // Main scene
+    Engine::Scene *mainScene = new Engine::Scene();
+
+    Engine::Transform *squareTransform = new Engine::Transform();
+
+    squareTransform->position = Vector2<float>(80, 80);
+    squareTransform->rotation = 0;
+
+    square->addComponent<Engine::ComponentID::Transform>(squareTransform);
+
+    Engine::Material *mat = renderer->loadMaterial("assets/Test.png");
+
+    square->addComponent<Engine::ComponentID::Material>(mat);
+
+    mainScene->root->addChild(square);
 
     bool running = true;
 
@@ -37,8 +56,19 @@ int GameInit(int argc, char **argv)
     float fpsAvg = 0;
     unsigned long long fpsCount = 0;
 
+    renderer->SetScene(mainScene);
+
     while (running)
     {
+
+        Engine::Event e;
+        while (gameWindow->getEvent(e))
+        {
+            if (e.eventType == Engine::EventType::Quit)
+                running = false;
+        }
+
+        renderer->Update();
 
         char n_char[6 + sizeof(char)];
         std::sprintf(n_char, "%d", (int)(fpsAvg / fpsCount));

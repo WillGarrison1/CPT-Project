@@ -14,16 +14,12 @@ namespace Engine
                                     0);
     }
 
-    std::vector<Event> Window::getEvents()
+    bool Window::getEvent(Event& event)
     {
-        std::vector<Event> events;
-
         SDL_Event e;
-        while (SDL_PollEvent(&e))
-        {
-            events.push_back(e);
-        }
+        bool out = SDL_PollEvent(&e);
 
-        return events;
+        event = Event(e);
+        return out;
     }
 }

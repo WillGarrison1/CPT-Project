@@ -6,7 +6,7 @@ namespace Engine
     {
     }
 
-    Event::Event(SDL_Event e)
+    Event::Event(const SDL_Event e)
     {
         switch (e.type)
         {
@@ -24,6 +24,9 @@ namespace Engine
             break;
         case SDL_EVENT_MOUSE_BUTTON_UP:
             eventType = EventType::MouseUp;
+            break;
+        case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
+            eventType = EventType::PixelSizeChanged;
             break;
         default:
             eventType = EventType::None;

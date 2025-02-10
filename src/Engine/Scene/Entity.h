@@ -33,10 +33,11 @@ namespace Engine
             components.clear();
         }
 
+        template <ComponentID id>
         void addComponent(Component *component)
         {
-            ASSERT(components.count(component->ID) == 0); // Should probably change to allow multiple components
-            components.insert({component->ID, component});
+            ASSERT(components.count(id) == 0); // Should probably change to allow multiple components
+            components.insert({id, component});
         }
 
         template <ComponentID comp>

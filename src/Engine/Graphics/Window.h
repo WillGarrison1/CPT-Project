@@ -28,7 +28,7 @@ namespace Engine
         bool vsync;
 
         WinProps()
-            : title(0), width(0), height(0), vsync(0) {}
+            : title(""), width(0), height(0), vsync(0) {}
 
         WinProps(std::string title,
                  unsigned int width = DEFAULT_WIN_WIDTH,
@@ -69,7 +69,7 @@ namespace Engine
 
         SDL_Window *getWindow() const { return m_Window; }
 
-        std::vector<Event> getEvents();
+        bool getEvent(Event& event);
 
         // Updates the window and calls events
         void Update();

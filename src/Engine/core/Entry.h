@@ -1,14 +1,12 @@
 #ifndef ENTRY_H
 #define ENTRY_H
 
-
-
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-extern int GameInit(int argc, char** argv);
+extern int GameInit(int argc, char **argv);
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 
     if (!SDL_Init(SDL_INIT_VIDEO))
@@ -21,12 +19,10 @@ int main(int argc, char** argv)
 
     if (error)
         return error;
-    
+
     SDL_Quit();
 
     return 0;
 }
-
-
 
 #endif

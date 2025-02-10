@@ -14,13 +14,15 @@ namespace Engine
         MouseDown,
         MouseUp,
         Quit,
+        PixelSizeChanged
     };
 
     struct Event
     {
-        Event(SDL_Event e);
+        Event() : eventType(EventType::None) {}
+        Event(const SDL_Event e);
         Event(EventType e);
-        ~Event();
+        ~Event() {}
 
         EventType eventType;
     };
