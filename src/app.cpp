@@ -24,7 +24,7 @@ int GameInit(int argc, char **argv)
     // Main scene
     Engine::Scene *mainScene = new Engine::Scene();
 
-    Engine::Camera *camera = new Engine::Camera({100, 100}, {1080, 720});
+    Engine::Camera *camera = new Engine::Camera({-100, -100}, {1080, 720});
     mainScene->root->addChild(camera);
     mainScene->setCamera(camera);
 
