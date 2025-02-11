@@ -17,6 +17,10 @@ unsigned long long get_time()
 int GameInit(int argc, char **argv)
 {
 
+    Mat3x3<float> f;
+
+    std::cout << f;
+
     Engine::Window *gameWindow = new Engine::Window({"Game", 1080, 720, false});
 
     Engine::Renderer *renderer = new Engine::Renderer(gameWindow);

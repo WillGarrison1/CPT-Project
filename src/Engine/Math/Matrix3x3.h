@@ -40,18 +40,53 @@ struct Mat3x3
      sx,sy,shx, and shy
      */
 
-    // Matrix multiplication
-    Mat3x3 operator*(const Mat3x3 &b) const
+    Mat3x3() : data{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}} {}
+    Mat3x3(T **m) : data(m) {}
+
+    T *&operator[](const int i)
     {
+        return data[i];
+    }
+    const T *operator[](const int i) const
+    {
+        return data[i];
+    }
+
+    // Matrix multiplication
+    Mat3x3<T> operator*(const Mat3x3<T> &b) const
+    {
+        Mat3x3<T> t;
+        for (int y = 0; y < 3; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                t[y][x] =
+                    data[y][0] * b[0][x] +
+                    data[y][1] * b[1][x] +
+                    data[y][2] * b[2][x];
+            }
+        }
+        return t;
     }
 
     // Applies a transormation to a point
-    Vector<T> apply(const Vector<T> point) const
+    Vector2<T> apply(const Vector2<T> point) const
     {
+        return {data[0][0] * point.x + data[0][1] * point.y + data[0][2],
+                data[1][0] * point.x + data[1][1] * point.y + data[1][2]};
     }
 
     // Write to buffer for debug
-    std::ostream &operator<<() const
+    friend void operator<<(std::ostream &out, const Mat3x3 b)
     {
+        for (int y = 0; y < 3; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                out << b[y][x] << " ";
+            }
+            out << "\n";
+        }
+        out << std::endl;
     }
 };

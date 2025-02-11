@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 
 #include "Engine/Scene/Scene.h"
+#include "Engine/Math/Matrix3x3.h"
 
 #include "Window.h"
 #include "Color.h"
