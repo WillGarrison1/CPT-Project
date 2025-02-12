@@ -1,5 +1,7 @@
 #include "Renderer.h"
 #include "Engine/Scene/Component.h"
+#include "Engine/Math/Matrix3x3.h"
+
 #include <SDL3_image/SDL_image.h>
 
 namespace Engine
@@ -29,37 +31,54 @@ namespace Engine
         SDL_RenderClear(renderer);
     }
 
-    void Renderer::RenderEntity(Entity *entity, bool recursive, Vector2<float> parent, Camera *camera) const
+    void Renderer::RenderEntity(Entity *entity, bool recursive, Mat3x3<float> worldTransform) const
     {
 
-        if (entity->hasComponent<ComponentID::Transform>() && entity->hasComponent<ComponentID::Material>())
+        if (entity->hasComponent<ComponentID::Transform>())
         {
+            // Three steps for applying matrix
+            // 1. Translate
+            // 2. Rotate
+            // 3. Scale
 
-            Transform *cameraTransform = static_cast<Transform *>(camera->getComponent<ComponentID::Transform>());
-
+            Mat3x3<float> matrix;
             Transform *transform = static_cast<Transform *>(entity->getComponent<ComponentID::Transform>());
-            Material *entityMat = static_cast<Material *>(entity->getComponent<ComponentID::Material>());
 
-            ASSERT(transform != nullptr);
-            ASSERT(entityMat != nullptr);
-            ASSERT(entityMat->texture != nullptr);
+            // Translate first
+            matrix = matrix * Mat3x3<float>::translate(transform->position);
 
-            // Render stuff here
-            parent = transform->position + parent;
+            // Rotate Next
+            matrix = matrix * Mat3x3<float>::rotate(transform->rotation);
 
-            Vector2<float> screenPos = parent - cameraTransform->position;
+            matrix = worldTransform * matrix; // Apply parent matrix
 
-            float width, height; // should probably store the image dimensions in material struct
-            SDL_GetTextureSize(entityMat->texture, &width, &height);
-            SDL_FRect dest = {screenPos.x - width / 2, screenPos.y - height / 2, width, height};
+            worldTransform = matrix;
 
-            SDL_RenderTexture(renderer, entityMat->texture, NULL, &dest);
+            if (entity->hasComponent<ComponentID::Material>())
+            {
+
+                Material *entityMat = static_cast<Material *>(entity->getComponent<ComponentID::Material>());
+
+                ASSERT(transform != nullptr);
+                ASSERT(entityMat != nullptr);
+                ASSERT(entityMat->texture != nullptr);
+
+                Vector2<float> screenPos = matrix.apply({0, 0});
+
+                float globalRotation = std::atan2(matrix[1][0], matrix[0][0]) * (180.0f / M_PI);
+
+                float width, height; // should probably store the image dimensions in material struct
+                SDL_GetTextureSize(entityMat->texture, &width, &height);
+                SDL_FRect dest = {screenPos.x - width / 2, screenPos.y - height / 2, width, height};
+
+                SDL_RenderTextureRotated(renderer, entityMat->texture, NULL, &dest, globalRotation, NULL, SDL_FLIP_NONE);
+            }
         }
         if (recursive)
         {
             for (Entity *child : entity->getChildren())
             {
-                RenderEntity(child, true, parent, camera);
+                RenderEntity(child, true, worldTransform);
             }
         }
     }
@@ -74,7 +93,15 @@ namespace Engine
         if (!sceneCamera)
             return;
 
-        RenderEntity(scene->root, true, {0, 0}, sceneCamera);
+        Transform *cameraTransform = static_cast<Transform *>(sceneCamera->getComponent<ComponentID::Transform>());
+
+        // Compute camera "view matrix"
+        // The positions and rotations must be negated in order to create it
+
+        Mat3x3<float> cameraMat;
+        cameraMat = cameraMat * Mat3x3<float>::translate(-cameraTransform->position);
+        cameraMat = cameraMat * Mat3x3<float>::rotate(-cameraTransform->rotation);
+        RenderEntity(scene->root, true, cameraMat);
     }
 
     Material *Renderer::loadMaterial(std::string path)
@@ -86,6 +113,8 @@ namespace Engine
 
     void Renderer::Update() const
     {
+        Clear();
+
         if (scene)
             RenderScene();
         SDL_RenderPresent(renderer);

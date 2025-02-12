@@ -8,7 +8,7 @@ namespace Engine
     {
     public:
         Camera();
-        Camera(Vector2<float> pos, Vector2<float> dimensions);
+        Camera(Vector2<float> pos, float rotation, Vector2<float> dimensions);
         ~Camera();
 
     private:

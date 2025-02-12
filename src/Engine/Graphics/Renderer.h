@@ -21,7 +21,7 @@ namespace Engine
         void SetDrawColor(Color color) const;
         void SetScene(Scene *s) { scene = s; };
 
-        void RenderEntity(Entity *entity, bool recursive, Vector2<float> center, Camera *camera) const;
+        void RenderEntity(Entity *entity, bool recursive, Mat3x3<float> worldTransform) const;
         void RenderScene() const;
 
         Material *loadMaterial(std::string path);

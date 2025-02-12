@@ -21,6 +21,11 @@ struct Vector2
         return Vector2(x - other.x, y - other.y);
     }
 
+    Vector2 operator-()
+    {
+        return Vector2(-x, -y);
+    }
+
     void operator=(const Vector2 &other)
     {
         x = other.x;
