@@ -85,18 +85,18 @@ int GameInit(int argc, char **argv)
         inputManager->Update();
 
         if (inputManager->getKeyboardButton(Engine::KB_UP))
-            squareTransform->rotation += 0.01f;
+            squareTransform->rotation += 0.1f;
         if (inputManager->getKeyboardButton(Engine::KB_DOWN))
-            squareTransform->rotation -= 0.01f;
+            squareTransform->rotation -= 0.1f;
 
         if (inputManager->getKeyboardButton(Engine::KB_W))
-            cameraTransform->position.y -= 0.05f;
+            cameraTransform->position.y -= 0.1f;
         if (inputManager->getKeyboardButton(Engine::KB_S))
-            cameraTransform->position.y += 0.05f;
+            cameraTransform->position.y += 0.1f;
         if (inputManager->getKeyboardButton(Engine::KB_A))
-            cameraTransform->position.x -= 0.05f;
+            cameraTransform->position.x -= 0.1f;
         if (inputManager->getKeyboardButton(Engine::KB_D))
-            cameraTransform->position.x += 0.05f;
+            cameraTransform->position.x += 0.1f;
 
         renderer->Update();
 
