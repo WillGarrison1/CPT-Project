@@ -5,6 +5,7 @@
 #include "Engine/Core/Entry.h"
 #include "Engine/Core/Engine.h"
 #include "Engine/Events/Event.h"
+#include "Engine/Input/Input.h"
 #include "Engine/Scene/Scene.h"
 #include "Engine/Graphics/Window.h"
 #include "Engine/Graphics/Renderer.h"
@@ -67,8 +68,10 @@ int GameInit(int argc, char **argv)
 
     renderer->SetScene(mainScene);
 
+    Engine::Input *inputManager = new Engine::Input();
 
-    
+    Engine::Transform *cameraTransform = static_cast<Engine::Transform *>(camera->getComponent<Engine::ComponentID::Transform>());
+
     while (running)
     {
 
@@ -79,7 +82,21 @@ int GameInit(int argc, char **argv)
                 running = false;
         }
 
-        squareTransform->rotation += 0.005f;
+        inputManager->Update();
+
+        if (inputManager->getKeyboardButton(Engine::KB_UP))
+            squareTransform->rotation += 0.01f;
+        if (inputManager->getKeyboardButton(Engine::KB_DOWN))
+            squareTransform->rotation -= 0.01f;
+
+        if (inputManager->getKeyboardButton(Engine::KB_W))
+            cameraTransform->position.y -= 0.05f;
+        if (inputManager->getKeyboardButton(Engine::KB_S))
+            cameraTransform->position.y += 0.05f;
+        if (inputManager->getKeyboardButton(Engine::KB_A))
+            cameraTransform->position.x -= 0.05f;
+        if (inputManager->getKeyboardButton(Engine::KB_D))
+            cameraTransform->position.x += 0.05f;
 
         renderer->Update();
 

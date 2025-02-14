@@ -13,17 +13,17 @@ struct Vector2
 
     Vector2 operator+(const Vector2 &other)
     {
-        return Vector2(x + other.x, y + other.y);
+        return Vector2<T>(x + other.x, y + other.y);
     }
 
     Vector2 operator-(const Vector2 &other)
     {
-        return Vector2(x - other.x, y - other.y);
+        return Vector2<T>(x - other.x, y - other.y);
     }
 
     Vector2 operator-()
     {
-        return Vector2(-x, -y);
+        return Vector2<T>(-x, -y);
     }
 
     void operator=(const Vector2 &other)
