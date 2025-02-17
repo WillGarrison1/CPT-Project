@@ -11,14 +11,19 @@ struct Vector2
     Vector2(T x, T y) : x(x), y(y) {}
     Vector2(const Vector2 &vec2) : x(vec2.x), y(vec2.y) {}
 
-    Vector2 operator+(const Vector2 &other)
+    const Vector2 operator+(const Vector2 &other)
     {
         return Vector2<T>(x + other.x, y + other.y);
     }
 
-    Vector2 operator-(const Vector2 &other)
+    const Vector2 operator-(const Vector2 &other)
     {
         return Vector2<T>(x - other.x, y - other.y);
+    }
+
+    const Vector2 operator/(const Vector2 &other)
+    {
+        return Vector2<T>(x / other.x, y / other.y);
     }
 
     Vector2 operator-()

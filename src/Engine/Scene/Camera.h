@@ -8,10 +8,13 @@ namespace Engine
     {
     public:
         Camera();
-        Camera(Vector2<float> pos, float rotation, Vector2<float> dimensions);
+        Camera(Vector2<float> pos, float rotation, float size);
+
         ~Camera();
 
+        float GetSize() { return size; }
+
     private:
-        Vector2<float> dimensions; // the area the camera sees
+        float size; // the area the camera sees
     };
 }

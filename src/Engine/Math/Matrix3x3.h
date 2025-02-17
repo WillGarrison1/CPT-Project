@@ -95,7 +95,7 @@ struct Mat3x3
 
     static Mat3x3<T> scale(Vector2<T> scale)
     {
-        Mat3x3<T> mat(0);
+        Mat3x3<T> mat;
         mat[0][0] = scale.x;
         mat[1][1] = scale.y;
         return mat;

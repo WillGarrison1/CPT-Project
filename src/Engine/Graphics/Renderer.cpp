@@ -9,14 +9,21 @@ namespace Engine
     Renderer::Renderer()
     {
         scene = nullptr;
+        window = nullptr;
+        textureScaleFactor = 0;
         renderer = SDL_CreateRenderer(NULL, NULL);
     }
 
-    Renderer::Renderer(Window *window)
+    Renderer::Renderer(Window *win)
     {
+        window = win;
+
         renderer = SDL_CreateRenderer(window->getWindow(), NULL);
+
         if (window->getProps().vsync)
             SDL_SetRenderVSync(renderer, 1);
+
+        textureScaleFactor = 0;
     }
 
     Renderer::~Renderer() { SDL_DestroyRenderer(renderer); }
@@ -69,7 +76,7 @@ namespace Engine
 
                 float width, height; // should probably store the image dimensions in material struct
                 SDL_GetTextureSize(entityMat->texture, &width, &height);
-                SDL_FRect dest = {screenPos.x - width / 2, screenPos.y - height / 2, width, height};
+                SDL_FRect dest = {screenPos.x - width / 2, screenPos.y - height / 2, width * textureScaleFactor, height * textureScaleFactor};
 
                 SDL_RenderTextureRotated(renderer, entityMat->texture, NULL, &dest, globalRotation, NULL, SDL_FLIP_NONE);
             }
@@ -83,17 +90,23 @@ namespace Engine
         }
     }
 
-    void Renderer::RenderScene() const
+    void Renderer::RenderScene()
     {
         if (!scene->root)
             return;
 
         Camera *sceneCamera = scene->getCamera();
+        float cameraSize = sceneCamera->GetSize();
+
+        WinProps properties = window->getProps();
+        Vector2<float> windowDimensions = Vector2<float>(properties.dimensions.x, properties.dimensions.y);
 
         if (!sceneCamera)
             return;
 
         Transform *cameraTransform = static_cast<Transform *>(sceneCamera->getComponent<ComponentID::Transform>());
+
+        textureScaleFactor = windowDimensions.x / cameraSize;
 
         // Compute camera "view matrix"
         // The positions and rotations must be negated in order to create it
@@ -101,6 +114,7 @@ namespace Engine
         Mat3x3<float> cameraMat;
         cameraMat = cameraMat * Mat3x3<float>::translate(-cameraTransform->position);
         cameraMat = cameraMat * Mat3x3<float>::rotate(-cameraTransform->rotation);
+        cameraMat = cameraMat * Mat3x3<float>::scale({textureScaleFactor, textureScaleFactor});
         RenderEntity(scene->root, true, cameraMat);
     }
 
@@ -111,7 +125,7 @@ namespace Engine
         return img;
     }
 
-    void Renderer::Update() const
+    void Renderer::Update()
     {
         Clear();
 

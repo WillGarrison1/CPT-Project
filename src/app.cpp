@@ -29,7 +29,7 @@ int GameInit(int argc, char **argv)
     // Main scene
     Engine::Scene *mainScene = new Engine::Scene();
 
-    Engine::Camera *camera = new Engine::Camera({0, 0}, 0, {1080, 720});
+    Engine::Camera *camera = new Engine::Camera({0, 0}, 0, 400);
     mainScene->root->addChild(camera);
     mainScene->setCamera(camera);
 
@@ -37,7 +37,7 @@ int GameInit(int argc, char **argv)
 
     Engine::Transform *squareTransform = new Engine::Transform();
 
-    squareTransform->position = Vector2<float>(400, 300);
+    squareTransform->position = Vector2<float>(300, 400);
     squareTransform->rotation = 45;
     square->addComponent<Engine::ComponentID::Transform>(squareTransform);
 
@@ -50,7 +50,7 @@ int GameInit(int argc, char **argv)
 
     Engine::Transform *childTransform = new Engine::Transform();
 
-    childTransform->position = Vector2<float>(150, 0);
+    childTransform->position = Vector2<float>(200, 0);
     childTransform->rotation = 0;
     child->addComponent<Engine::ComponentID::Transform>(childTransform);
 

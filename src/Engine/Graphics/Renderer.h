@@ -15,23 +15,25 @@ namespace Engine
     public:
         Renderer();
 
-        Renderer(Window *window);
+        Renderer(Window *win);
         ~Renderer();
 
         void SetDrawColor(Color color) const;
         void SetScene(Scene *s) { scene = s; };
 
         void RenderEntity(Entity *entity, bool recursive, Mat3x3<float> worldTransform) const;
-        void RenderScene() const;
+        void RenderScene();
 
         Material *loadMaterial(std::string path);
 
         void Clear() const;
-        void Update() const;
+        void Update();
 
     private:
         SDL_Renderer *renderer;
 
         Scene *scene;
+        Window *window;
+        float textureScaleFactor;
     };
 }
